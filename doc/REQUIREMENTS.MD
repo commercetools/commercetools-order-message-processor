@@ -20,7 +20,29 @@ Default is to fetch orders from last 5 days (5d). It should process configured a
 
 - On start up application should setup required / configured channels (if those are not created yet)
 
-Configuration example (minimum):
+- On start up application should load commercetools project credentials from OS env variables and use them to load the actual processor configuration as JOSN from custom-object. Default custom object container name ```commercetools-order-to-confirmation-email-processor```. Default custom object container key ```configuration```. Container name and key can be overridden by OS env variables.
+
+OS env variable example (minimum):
+```
+ctpProjectKey=""
+ctpClientId=""
+ctpClientSecret=""
+ctpAuthUrl=""
+ctpApiUrl=""
+```
+
+OS env variable example:
+```
+ctpProjectKey=""
+ctpClientId=""
+ctpClientSecret=""
+ctpAuthUrl=""
+ctpApiUrl=""
+customObjectConfigurationContainerName="myCustomContainerName"
+customObjectConfigurationKey="myCustomObjectKey"
+```
+
+Custom object configuration example (minimum):
 ```
 {
   "commercetools": {
@@ -34,7 +56,7 @@ Configuration example (minimum):
 }
 ```
 
-Configuration example:
+Custom object configuration example:
 ```
  {
    "commercetools": {
