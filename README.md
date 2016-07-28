@@ -1,1 +1,3 @@
-# commercetools-order-message-processor
+# commercetools-order-to-confirmation-email-processor
+
+Scheduled processor that ensures that for each created order an order confirmation e-mail is sent. Depending on configuration it will call configured web front end URL which will send an e-mail for given order UUID or send an e-mail directly from processor using preconfigured email sender and template. Implementation details can be found  [here](https://github.com/commercetools/commercetools-order-message-processor/blob/master/doc/REQUIREMENTS.MD).
