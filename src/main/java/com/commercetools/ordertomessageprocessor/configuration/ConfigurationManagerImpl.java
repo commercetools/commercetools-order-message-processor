@@ -15,9 +15,11 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
     BlockingSphereClient client; 
 
     private ServiceConfiguration serviceConfiguration;
+    //following are default values if not configured
+    private final int defaultItemsPerPage = 100;
     
     //TODO: make overwritable by OS env variable
-    private final String defaultContainerName = "commercetools-order-to-confirmation-email-processor";
+    private final String defaultContainer = "commercetools-order-to-confirmation-email-processor";
     //TODO: make overwritable by OS env variable
     private final String defaultKey = "configuration";
 
@@ -25,14 +27,28 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
     public void getConfiguration() {
         final CustomObjectQuery<ServiceConfiguration> customObjectQuery = CustomObjectQuery
                 .of(ServiceConfiguration.class)
-                .byContainer(defaultContainerName)
+                .byContainer(defaultContainer)
                 .plusPredicates(o -> o.key().is(defaultKey));
 
         final PagedQueryResult<CustomObject<ServiceConfiguration>> result = client.executeBlocking(customObjectQuery);
         
         final List<CustomObject<ServiceConfiguration>> results = result.getResults();
         if (results.isEmpty()) {
-            throw new RuntimeException("Could not get configuration from custom-object container " + defaultContainerName + " and key " + defaultKey);
+            throw new RuntimeException("Could not get configuration from custom-object container " + defaultContainer + " and key " + defaultKey);
         }
+        //the commercetools platform asserts that container and key pair are unique
+        assert results.size() == 1;
+        this.serviceConfiguration = results.get(0).getValue(); 
+    }
+
+    @Override
+    public int getItemsPerPage() {
+        final Integer itemsPerPageFromConfig = serviceConfiguration.getItemsPerPage();
+        return itemsPerPageFromConfig != null ? itemsPerPageFromConfig : defaultItemsPerPage;
+    }
+
+    @Override
+    public String getEmailSenderUrl() {
+        return serviceConfiguration.getEmailSenderUrl();
     }
 }

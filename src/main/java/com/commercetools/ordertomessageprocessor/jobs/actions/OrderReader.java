@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.commercetools.ordertomessageprocessor.configuration.ConfigurationManager;
+
 import io.sphere.sdk.channels.Channel;
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.orders.Order;
@@ -31,6 +33,9 @@ public class OrderReader implements ItemReader<Order> {
     @Autowired
     private BlockingSphereClient client;
 
+    @Autowired
+    private ConfigurationManager configurationManager;
+
     private List<Order> orders = Collections.emptyList();
     private boolean wasInitialQueried = false;
     private long total;
@@ -42,9 +47,6 @@ public class OrderReader implements ItemReader<Order> {
 
     //TODO: make this configurable
     private final Duration readtime = Duration.of(120, HOURS);
-    
-    //TODO: make this configurable
-    private final long defaultPageSize = 100L;
 
     @Override
     public Order read() {
@@ -93,6 +95,6 @@ public class OrderReader implements ItemReader<Order> {
                 .plusPredicates(order -> order.lastModifiedAt().isGreaterThanOrEqualTo(now.minus(readtime)))
                 .withSort(m -> m.lastModifiedAt().sort().asc())
                 .withOffset(offset)
-                .withLimit(defaultPageSize);
+                .withLimit(configurationManager.getItemsPerPage());
     }
 }
