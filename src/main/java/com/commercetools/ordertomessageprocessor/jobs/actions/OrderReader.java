@@ -1,8 +1,5 @@
 package com.commercetools.ordertomessageprocessor.jobs.actions;
 
-import static java.time.temporal.ChronoUnit.HOURS;
-
-import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,9 +42,6 @@ public class OrderReader implements ItemReader<Order> {
     
     private final ZonedDateTime now = ZonedDateTime.now();
 
-    //TODO: make this configurable
-    private final Duration readtime = Duration.of(120, HOURS);
-
     @Override
     public Order read() {
         if(isQueryNeeded()) {
@@ -81,18 +75,18 @@ public class OrderReader implements ItemReader<Order> {
         offset = result.getOffset() + result.getCount();
         orders = result.getResults();
         wasInitialQueried = true;
+        LOG.info("Got {} Orders from commercetools platform with no syncinfo.", total);
     }
 
     private void buildQuery(){
-        //TODO GET Channels
-        final Channel reference1 = null;
-        final Channel reference2 = null;
+        final Channel reference1 = configurationManager.getEmailSendChannel();
+        final Channel reference2 = configurationManager.getEmailSendErrorChannel();
         final List<Channel> channels = new ArrayList<Channel>();
         channels.add(reference1);
         channels.add(reference2);
         orderQuery = OrderQuery.of()
                 .withPredicates(order -> order.syncInfo().channel().isIn(channels).negate())
-                .plusPredicates(order -> order.lastModifiedAt().isGreaterThanOrEqualTo(now.minus(readtime)))
+                .plusPredicates(order -> order.lastModifiedAt().isGreaterThanOrEqualTo(now.minus(configurationManager.getItemsOfLast())))
                 .withSort(m -> m.lastModifiedAt().sort().asc())
                 .withOffset(offset)
                 .withLimit(configurationManager.getItemsPerPage());

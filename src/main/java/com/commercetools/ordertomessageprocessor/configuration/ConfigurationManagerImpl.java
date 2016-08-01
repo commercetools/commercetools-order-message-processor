@@ -2,7 +2,6 @@ package com.commercetools.ordertomessageprocessor.configuration;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.HOURS;
-import static java.time.temporal.ChronoUnit.WEEKS;
 
 import java.time.Duration;
 import java.util.List;
@@ -12,6 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import io.sphere.sdk.channels.Channel;
+import io.sphere.sdk.channels.ChannelDraft;
+import io.sphere.sdk.channels.ChannelRole;
+import io.sphere.sdk.channels.commands.ChannelCreateCommand;
+import io.sphere.sdk.channels.queries.ChannelQuery;
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.customobjects.CustomObject;
 import io.sphere.sdk.customobjects.queries.CustomObjectQuery;
@@ -28,7 +32,11 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
     @Autowired
     BlockingSphereClient client; 
 
+    //values stored here are created when calling getConfiguration
     private ServiceConfiguration serviceConfiguration;
+    private Channel emailSendChannel; 
+    private Channel emailSendErrorChannel;
+    
     //following are default values if not configured
     private final static int DEFAULTITEMSPERPAGE = 100;
     private final static Duration DEFUALTITEMSOFLAST = Duration.of(5, DAYS);
@@ -58,6 +66,8 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
         //the commercetools platform asserts that container and key pair are unique
         assert results.size() == 1;
         this.serviceConfiguration = results.get(0).getValue(); 
+
+        getOrCreateChannels();
     }
 
     @Override
@@ -85,7 +95,7 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
                 return Duration.of(amount, DAYS);
             }
             else if (fromConfiguration.endsWith("w")) {
-                return Duration.of(amount, WEEKS);
+                return Duration.of(amount * 7, DAYS);
             }
             else {
                 return Duration.of(amount, HOURS);
@@ -107,5 +117,32 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
     public String getEmailSendErrorChannelKey() {
         final String emailSentErrorChannelKey = serviceConfiguration.getEmailSendErrorChannelKey();
         return emailSentErrorChannelKey != null ? emailSentErrorChannelKey : DEFAULTEMAILSENTCHANNELERRORKEY;
+    }
+
+    @Override
+    public Channel getEmailSendChannel() {
+        return emailSendChannel;
+    }
+
+    @Override
+    public Channel getEmailSendErrorChannel() {
+        return emailSendErrorChannel;
+    }
+
+    private void getOrCreateChannels() {
+        emailSendChannel = getOrCreateChannel(getEmailSendChannelKey()); 
+        emailSendErrorChannel = getOrCreateChannel(getEmailSendErrorChannelKey());
+    }
+
+    private Channel getOrCreateChannel(final String channelName) {
+        final PagedQueryResult<Channel> result = client.executeBlocking(ChannelQuery.of().byKey(channelName));
+        final List<Channel> results = result.getResults();
+        if (results.isEmpty()) {
+            return client.executeBlocking(ChannelCreateCommand.of(ChannelDraft.of(channelName).withRoles(ChannelRole.ORDER_EXPORT)));
+        }
+        else {
+            assert results.size() == 1;
+            return results.get(0);
+        }
     }
 }

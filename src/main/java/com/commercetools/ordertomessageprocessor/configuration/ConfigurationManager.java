@@ -2,6 +2,8 @@ package com.commercetools.ordertomessageprocessor.configuration;
 
 import java.time.Duration;
 
+import io.sphere.sdk.channels.Channel;
+
 /**
  * Manages the service configuration
  * @author mht@dotsource.de
@@ -15,4 +17,6 @@ public interface ConfigurationManager {
     public Duration getItemsOfLast();
     public String getEmailSendChannelKey();
     public String getEmailSendErrorChannelKey();
+    public Channel getEmailSendChannel();
+    public Channel getEmailSendErrorChannel();
 }
