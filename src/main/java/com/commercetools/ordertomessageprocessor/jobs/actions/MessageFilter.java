@@ -5,15 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 
 import io.sphere.sdk.orders.Order;
-import io.sphere.sdk.orders.messages.OrderCreatedMessage;
 
+/**
+ * Orderfilter. Spring Boot filter (processor). At the moment not need to further filter 
+ * @author mht@dotsource.de
+ *
+ */
+public class MessageFilter implements ItemProcessor<Order, Order> {
+    public static final Logger LOG = LoggerFactory.getLogger(MessageFilter.class);
 
-public class MessageProcessor implements ItemProcessor<OrderCreatedMessage, Order> {
-    public static final Logger LOG = LoggerFactory.getLogger(MessageProcessor.class);
-    
     @Override
-    public Order process(OrderCreatedMessage message) {
-        LOG.info("Called MessageProcesser.process with parameter {}", message);
-        return message.getOrder();
+    public Order process(Order order) {
+        return order;
     }
 }

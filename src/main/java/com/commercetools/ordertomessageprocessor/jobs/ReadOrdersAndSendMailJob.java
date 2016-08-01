@@ -23,7 +23,7 @@ import io.sphere.sdk.orders.Order;
 
 @Configuration
 @EnableBatchProcessing
-public class ReadMessagesJob {
+public class ReadOrdersAndSendMailJob {
     private static final String STEP_LOAD_MESSAGES = "loadMessages";
     
     @Autowired
@@ -39,7 +39,6 @@ public class ReadMessagesJob {
     }
 
     @Bean
-    @DependsOn({"mailSyncInfoHelper", "blockingSphereClient"})
     public ItemProcessor<Order, Order> processor() {
         return new MessageFilter();
     }
@@ -60,7 +59,7 @@ public class ReadMessagesJob {
     }
 
     @Bean
-    public Step loadMessages(ItemReader<Order> reader, 
+    public Step readOrdersAndSendMailJob(ItemReader<Order> reader, 
             ItemProcessor<Order, Order> processor,
             ItemWriter<Order> writer) {
         return steps.get(STEP_LOAD_MESSAGES)

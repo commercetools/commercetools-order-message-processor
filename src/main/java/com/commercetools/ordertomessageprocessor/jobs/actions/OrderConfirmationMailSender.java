@@ -6,12 +6,12 @@ import org.springframework.batch.item.ItemWriter;
 
 import io.sphere.sdk.orders.Order;
 
-public class MessageWriter implements ItemWriter<Order> {
+public class OrderConfirmationMailSender implements ItemWriter<Order> {
 
     @Override
-    public void write(List<? extends Order> items) throws Exception {
-        for (Order item : items) {
-            //TODO handle Message
+    public void write(List<? extends Order> orders) throws Exception {
+        for (Order order : orders) {
+            //TODO send Mail
         }
     }
 }
