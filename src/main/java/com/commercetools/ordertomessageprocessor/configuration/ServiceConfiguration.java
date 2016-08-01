@@ -13,13 +13,16 @@ import io.sphere.sdk.models.Base;
 public class ServiceConfiguration extends Base {
     private String emailSenderUrl;
     private Integer itemsPerPage;
+    private String itemsOfLast;
 
     @JsonCreator
     public ServiceConfiguration(
             @JsonProperty("emailSenderUrl") final String emailSenderUrl,
-            @JsonProperty("itemsPerPage")final Integer itemsPerPage) {
+            @JsonProperty("itemsPerPage") final Integer itemsPerPage,
+            @JsonProperty("itemsOfLast") final String itemsOfLast) {
         this.emailSenderUrl = emailSenderUrl;
         this.itemsPerPage = itemsPerPage;
+        this.itemsOfLast = itemsOfLast;
     }
 
     public String getEmailSenderUrl() {
@@ -28,5 +31,9 @@ public class ServiceConfiguration extends Base {
 
     public Integer getItemsPerPage() {
         return itemsPerPage;
+    }
+
+    public String getitemsOfLast() {
+        return itemsOfLast;
     }
 }

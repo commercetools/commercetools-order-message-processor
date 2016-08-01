@@ -1,6 +1,10 @@
 package com.commercetools.ordertomessageprocessor.integrationtest;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+import static java.time.temporal.ChronoUnit.HOURS;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Duration;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,9 +37,10 @@ public class ConfigurationTest {
     private final String defaultContainer = "commercetools-order-to-confirmation-email-processor";
     private final String defaultKey = "configuration";
 
+
     @Test
-    public void testDefaultValuesForEmptyConfiguratin() {
-        final ServiceConfiguration serviceConfiguration =  new ServiceConfiguration("SomeURL", null);
+    public void testDefaultValuesForEmptyConfiguration() {
+        final ServiceConfiguration serviceConfiguration =  new ServiceConfiguration("SomeURL", null, null);
         final CustomObjectUpsertCommand<ServiceConfiguration> createCustomObject = CustomObjectUpsertCommand.of(
                 CustomObjectDraft.ofUnversionedUpsert(defaultContainer, defaultKey, serviceConfiguration, ServiceConfiguration.class));
         final CustomObject<ServiceConfiguration> customObject = client.executeBlocking(createCustomObject);
@@ -44,5 +49,23 @@ public class ConfigurationTest {
         configurationManager.getConfiguration();
 
         assertThat(configurationManager.getItemsPerPage()).isEqualTo(100);
+        assertThat(configurationManager.getItemsOfLast()).isEqualTo(Duration.of(5, DAYS));
+    }
+
+    @Test
+    public void testSetValuesForEmptyConfiguration() {
+        final int objectsPerPage = 200;
+        final String itemOfLastStringifyed = "2h";
+        final Duration itemsOfLast = Duration.of(2, HOURS);
+        final ServiceConfiguration serviceConfiguration =  new ServiceConfiguration("SomeURL", objectsPerPage, itemOfLastStringifyed);
+        final CustomObjectUpsertCommand<ServiceConfiguration> createCustomObject = CustomObjectUpsertCommand.of(
+                CustomObjectDraft.ofUnversionedUpsert(defaultContainer, defaultKey, serviceConfiguration, ServiceConfiguration.class));
+        final CustomObject<ServiceConfiguration> customObject = client.executeBlocking(createCustomObject);
+        System.out.println(customObject);
+
+        configurationManager.getConfiguration();
+
+        assertThat(configurationManager.getItemsPerPage()).isEqualTo(objectsPerPage);
+        assertThat(configurationManager.getItemsOfLast()).isEqualTo(itemsOfLast);
     }
 }
