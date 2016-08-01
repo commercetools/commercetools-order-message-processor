@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import com.commercetools.ordertomessageprocessor.configuration.ConfigurationManager;
+import com.commercetools.ordertomessageprocessor.configuration.ConfigurationManagerImpl;
 import com.commercetools.ordertomessageprocessor.jobs.actions.MessageFilter;
 import com.commercetools.ordertomessageprocessor.jobs.actions.OrderConfirmationMailSender;
 import com.commercetools.ordertomessageprocessor.jobs.actions.OrderReader;
@@ -24,7 +26,7 @@ import io.sphere.sdk.orders.Order;
 @Configuration
 @EnableBatchProcessing
 public class ReadOrdersAndSendMailJob {
-    private static final String STEP_LOAD_MESSAGES = "loadMessages";
+    private static final String STEP_LOAD_MESSAGES = "readOrdersAndSendMailStep";
     
     @Autowired
     private JobBuilderFactory jobs;
@@ -54,12 +56,17 @@ public class ReadOrdersAndSendMailJob {
     }
 
     @Bean
-    public Job createJob(@Qualifier(STEP_LOAD_MESSAGES) final Step loadMessages, final JobExecutionListener listener) {
-        return jobs.get("readMessagesJob").listener(listener).start(loadMessages).build();
+    public ConfigurationManager configurationManager() {
+        return new ConfigurationManagerImpl();
     }
 
     @Bean
-    public Step readOrdersAndSendMailJob(ItemReader<Order> reader, 
+    public Job createJob(@Qualifier(STEP_LOAD_MESSAGES) final Step readOrdersAndSendMailStep, final JobExecutionListener listener) {
+        return jobs.get("ReadOrdersAndSendMailJob").listener(listener).start(readOrdersAndSendMailStep).build();
+    }
+
+    @Bean
+    public Step readOrdersAndSendMailStep(ItemReader<Order> reader, 
             ItemProcessor<Order, Order> processor,
             ItemWriter<Order> writer) {
         return steps.get(STEP_LOAD_MESSAGES)
