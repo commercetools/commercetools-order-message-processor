@@ -7,29 +7,25 @@ import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.commercetools.ordertomessageprocessor.timestamp.TimeStampManager;
+import com.commercetools.ordertomessageprocessor.configuration.ConfigurationManager;
 
 public class JobListener implements JobExecutionListener {
 
     public static final Logger LOG = LoggerFactory.getLogger(JobListener.class);
 
     @Autowired
-    private TimeStampManager timeStampManager;
+    private ConfigurationManager configurationManager;
 
     @Override
     public void afterJob(JobExecution jobExecution) {
-        if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
-            LOG.info("Job finished. Saving new LastProcessedMessageTimeStamp to CustomObject");
-            timeStampManager.persistLastProcessedMessageTimeStamp();
-        }
-        else {
+        if(jobExecution.getStatus() != BatchStatus.COMPLETED) {
             LOG.error("Job did not complete. BatchStatus is {}", jobExecution.getStatus());
         }
     }
 
     @Override
     public void beforeJob(JobExecution jobExecution) {
-        // TODO Auto-generated method stub
+        LOG.info("Getting Configuration values from commercetools platform");
+        configurationManager.getConfiguration();
     }
 }
-
