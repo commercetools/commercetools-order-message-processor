@@ -14,15 +14,21 @@ public class ServiceConfiguration extends Base {
     private String emailSenderUrl;
     private Integer itemsPerPage;
     private String itemsOfLast;
+    private String emailSentChannelKey;
+    private String emailSendErrorChannelKey;
 
     @JsonCreator
     public ServiceConfiguration(
             @JsonProperty("emailSenderUrl") final String emailSenderUrl,
             @JsonProperty("itemsPerPage") final Integer itemsPerPage,
-            @JsonProperty("itemsOfLast") final String itemsOfLast) {
+            @JsonProperty("itemsOfLast") final String itemsOfLast,
+            @JsonProperty("emailSentChannelKey") final String emailSentChannelKey,
+            @JsonProperty("emailSendErrorChannelKey") final String emailSendErrorChannelKey) {
         this.emailSenderUrl = emailSenderUrl;
         this.itemsPerPage = itemsPerPage;
         this.itemsOfLast = itemsOfLast;
+        this.emailSentChannelKey = emailSentChannelKey;
+        this.emailSendErrorChannelKey = emailSendErrorChannelKey;
     }
 
     public String getEmailSenderUrl() {
@@ -35,5 +41,13 @@ public class ServiceConfiguration extends Base {
 
     public String getitemsOfLast() {
         return itemsOfLast;
+    }
+
+    public String getEmailSentChannelKey() {
+        return emailSentChannelKey;
+    }
+
+    public String getEmailSendErrorChannelKey() {
+        return emailSendErrorChannelKey;
     }
 }

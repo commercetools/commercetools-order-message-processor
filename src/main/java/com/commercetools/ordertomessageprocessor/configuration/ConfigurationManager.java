@@ -13,4 +13,6 @@ public interface ConfigurationManager {
     public int getItemsPerPage();
     public String getEmailSenderUrl();
     public Duration getItemsOfLast();
+    public String getEmailSendChannelKey();
+    public String getEmailSendErrorChannelKey();
 }

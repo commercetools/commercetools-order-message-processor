@@ -32,6 +32,8 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
     //following are default values if not configured
     private final static int DEFAULTITEMSPERPAGE = 100;
     private final static Duration DEFUALTITEMSOFLAST = Duration.of(5, DAYS);
+    private final static String DEFAULTEMAILSENTCHANNELKEY = "orderConfirmationEmail";
+    private final static String DEFAULTEMAILSENTCHANNELERRORKEY = "orderConfirmationEmailError";
 
     private final static String ITMESOFLASTPATTERN = "^[1-9][0-9]*[dhw]$";
 
@@ -93,5 +95,17 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
             LOG.info("The configuration value for \"itemsOfLast\" {} does not match the Pattern {}! Using default-value.", fromConfiguration, ITMESOFLASTPATTERN);
             return DEFUALTITEMSOFLAST;
         }
+    }
+
+    @Override
+    public String getEmailSendChannelKey() {
+        final String emailSentChannelKey = serviceConfiguration.getEmailSentChannelKey();
+        return emailSentChannelKey != null ? emailSentChannelKey : DEFAULTEMAILSENTCHANNELKEY;
+    }
+
+    @Override
+    public String getEmailSendErrorChannelKey() {
+        final String emailSentErrorChannelKey = serviceConfiguration.getEmailSendErrorChannelKey();
+        return emailSentErrorChannelKey != null ? emailSentErrorChannelKey : DEFAULTEMAILSENTCHANNELERRORKEY;
     }
 }
