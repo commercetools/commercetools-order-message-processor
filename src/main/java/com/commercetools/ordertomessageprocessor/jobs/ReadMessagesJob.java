@@ -15,14 +15,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
-import com.commercetools.ordertomessageprocessor.jobs.actions.MessageProcessor;
-import com.commercetools.ordertomessageprocessor.jobs.actions.MessageReader;
-import com.commercetools.ordertomessageprocessor.jobs.actions.MessageWriter;
-import com.commercetools.ordertomessageprocessor.timestamp.TimeStampManager;
-import com.commercetools.ordertomessageprocessor.timestamp.TimeStampManagerImpl;
+import com.commercetools.ordertomessageprocessor.jobs.actions.MessageFilter;
+import com.commercetools.ordertomessageprocessor.jobs.actions.OrderConfirmationMailSender;
+import com.commercetools.ordertomessageprocessor.jobs.actions.OrderReader;
 
 import io.sphere.sdk.orders.Order;
-import io.sphere.sdk.orders.messages.OrderCreatedMessage;
 
 @Configuration
 @EnableBatchProcessing
@@ -36,32 +33,25 @@ public class ReadMessagesJob {
     private StepBuilderFactory steps;
 
     @Bean
-    @DependsOn({"blockingSphereClient","timeStampManager"})
-    public ItemReader<OrderCreatedMessage> reader() {
-        return new MessageReader();
+    @DependsOn("blockingSphereClient")
+    public ItemReader<Order> reader() {
+        return new OrderReader();
     }
 
     @Bean
-    @DependsOn("blockingSphereClient")
-    public ItemProcessor<OrderCreatedMessage, Order> processor() {
-        return new MessageProcessor();
+    @DependsOn({"mailSyncInfoHelper", "blockingSphereClient"})
+    public ItemProcessor<Order, Order> processor() {
+        return new MessageFilter();
     }
 
     @Bean
     public ItemWriter<Order> writer() {
-        return new MessageWriter();
+        return new OrderConfirmationMailSender();
     }
 
     @Bean
-    @DependsOn("timeStampManager")
     public JobExecutionListener listener() {
         return new JobListener();
-    }
-
-    @Bean
-    @DependsOn("blockingSphereClient")
-    public TimeStampManager timeStampManager() {
-        return new TimeStampManagerImpl();
     }
 
     @Bean
@@ -70,11 +60,11 @@ public class ReadMessagesJob {
     }
 
     @Bean
-    public Step loadMessages(ItemReader<OrderCreatedMessage> reader, 
-            ItemProcessor<OrderCreatedMessage, Order> processor,
+    public Step loadMessages(ItemReader<Order> reader, 
+            ItemProcessor<Order, Order> processor,
             ItemWriter<Order> writer) {
         return steps.get(STEP_LOAD_MESSAGES)
-                .<OrderCreatedMessage, Order> chunk(1)
+                .<Order, Order> chunk(1)
                 .reader(reader)
                 .processor(processor)
                 .writer(writer)
