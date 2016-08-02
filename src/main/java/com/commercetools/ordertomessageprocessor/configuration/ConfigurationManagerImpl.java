@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import io.sphere.sdk.channels.Channel;
 import io.sphere.sdk.channels.ChannelDraft;
@@ -46,10 +47,10 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
 
     private final static String ITMESOFLASTPATTERN = "^[1-9][0-9]*[dhw]$";
 
-    //TODO: make overwritable by OS env variable
-    private final String defaultContainer = "commercetools-order-to-confirmation-email-processor";
-    //TODO: make overwritable by OS env variable
-    private final String defaultKey = "configuration";
+    @Value("${ctp.config.container}")
+    private String defaultContainer;
+    @Value("${ctp.config.key}")
+    private String defaultKey;
 
     @Override
     public void getConfiguration() {
