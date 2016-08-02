@@ -1,6 +1,7 @@
 package com.commercetools.ordertomessageprocessor.configuration;
 
 import java.time.Duration;
+import java.util.Optional;
 
 import io.sphere.sdk.channels.Channel;
 
@@ -13,7 +14,7 @@ public interface ConfigurationManager {
 
     public void getConfiguration();
     public int getItemsPerPage();
-    public String getEmailSenderUrl();
+    public Optional<String> getEmailSenderUrl();
     public Duration getItemsOfLast();
     public String getEmailSendChannelKey();
     public String getEmailSendErrorChannelKey();

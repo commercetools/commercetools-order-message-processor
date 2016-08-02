@@ -5,6 +5,7 @@ import static java.time.temporal.ChronoUnit.HOURS;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -77,8 +78,13 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
     }
 
     @Override
-    public String getEmailSenderUrl() {
-        return serviceConfiguration.getEmailSenderUrl();
+    public Optional<String> getEmailSenderUrl() {
+        if (serviceConfiguration == null) {
+            return Optional.empty();
+        }
+        else {
+            return Optional.of(serviceConfiguration.getEmailSenderUrl());
+        }
     }
 
     @Override
