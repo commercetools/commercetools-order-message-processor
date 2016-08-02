@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ShereConfiguration {
+public class SphereConfiguration {
 
     @Value("${ctpClientId}")
     private String clientId;

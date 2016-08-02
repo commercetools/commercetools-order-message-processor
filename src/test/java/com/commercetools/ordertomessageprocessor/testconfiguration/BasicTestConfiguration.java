@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import com.commercetools.ordertomessageprocessor.ShereConfiguration;
+import com.commercetools.ordertomessageprocessor.SphereConfiguration;
 
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.client.SphereAccessTokenSupplier;
@@ -30,8 +30,8 @@ public class BasicTestConfiguration {
     }
     
     @Bean
-    @DependsOn({"shereConfiguration", "httpClient"})
-    public BlockingSphereClient blockingSphereClient(final ShereConfiguration config, final HttpClient httpClient) {
+    @DependsOn({"sphereConfiguration", "httpClient"})
+    public BlockingSphereClient blockingSphereClient(final SphereConfiguration config, final HttpClient httpClient) {
         final SphereClientConfig clientConfig = SphereClientConfig.of(
                 config.getProjectKey(),
                 config.getClientId(),

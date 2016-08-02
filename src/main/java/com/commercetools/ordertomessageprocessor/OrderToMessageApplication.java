@@ -28,8 +28,8 @@ public class OrderToMessageApplication {
     }
     
     @Bean
-    @DependsOn({"shereConfiguration", "httpClient"})
-    public BlockingSphereClient blockingSphereClient(final ShereConfiguration config, final HttpClient httpClient) {
+    @DependsOn({"sphereConfiguration", "httpClient"})
+    public BlockingSphereClient blockingSphereClient(final SphereConfiguration config, final HttpClient httpClient) {
         final SphereClientConfig clientConfig = SphereClientConfig.of(
                 config.getProjectKey(),
                 config.getClientId(),
