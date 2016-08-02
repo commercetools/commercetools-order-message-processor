@@ -13,13 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 import com.commercetools.ordertomessageprocessor.configuration.ConfigurationManager;
 import com.commercetools.ordertomessageprocessor.configuration.ConfigurationManagerImpl;
 import com.commercetools.ordertomessageprocessor.jobs.actions.MessageFilter;
 import com.commercetools.ordertomessageprocessor.jobs.actions.OrderConfirmationMailSender;
 import com.commercetools.ordertomessageprocessor.jobs.actions.OrderReader;
+import com.commercetools.ordertomessageprocessor.syncinfo.MailSyncInfoHelper;
+import com.commercetools.ordertomessageprocessor.syncinfo.MailSyncInfoHelperImpl;
 
 import io.sphere.sdk.orders.Order;
 
@@ -35,7 +36,6 @@ public class ReadOrdersAndSendMailJob {
     private StepBuilderFactory steps;
 
     @Bean
-    @DependsOn("blockingSphereClient")
     public ItemReader<Order> reader() {
         return new OrderReader();
     }
@@ -58,6 +58,11 @@ public class ReadOrdersAndSendMailJob {
     @Bean
     public ConfigurationManager configurationManager() {
         return new ConfigurationManagerImpl();
+    }
+
+    @Bean
+    public MailSyncInfoHelper mailSyncInfoHelper() {
+        return new MailSyncInfoHelperImpl();
     }
 
     @Bean
