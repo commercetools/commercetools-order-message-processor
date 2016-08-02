@@ -70,8 +70,8 @@ public class OrderConfirmationMailSender implements ItemWriter<Order> {
                 mailSyncInfoHelper.setOrderConfirmationMailWasSend(order);
             }
             else {
-                LOG.warn("Response Code from API was {}", httpResponse.getStatusCode());
-                mailSyncInfoHelper.setOrderConfirmationMailWasSendWithError(order);
+                LOG.warn("Could not send Order confirmation mail Response Code from API was {}", httpResponse.getStatusCode());
+                mailSyncInfoHelper.setOrderConfirmationMailWasSendWithError(order, "HTTP_RESPONSE:" + httpResponse.getStatusCode());
             }
         }
         catch (InterruptedException | ExecutionException | TimeoutException e) {

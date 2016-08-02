@@ -27,12 +27,12 @@ public class MailSyncInfoHelperImpl implements MailSyncInfoHelper {
     private ConfigurationManager configurationManager;
 
     @Override
-    public void setOrderConfirmationMailWasSend(Order order) {
+    public void setOrderConfirmationMailWasSend(final Order order) {
         client.executeBlocking(OrderUpdateCommand.of(order, UpdateSyncInfo.of(configurationManager.getEmailSendChannel())));
     }
 
     @Override
-    public void setOrderConfirmationMailWasSendWithError(Order order) {
-        client.executeBlocking(OrderUpdateCommand.of(order, UpdateSyncInfo.of(configurationManager.getEmailSendErrorChannel())));
+    public void setOrderConfirmationMailWasSendWithError(final Order order, final String message) {
+        client.executeBlocking(OrderUpdateCommand.of(order, UpdateSyncInfo.of(configurationManager.getEmailSendErrorChannel()).withExternalId(message)));
     }
 }
