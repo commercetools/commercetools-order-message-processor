@@ -47,9 +47,9 @@ public class ConfigurationManagerImpl implements ConfigurationManager{
 
     private final static String ITMESOFLASTPATTERN = "^[1-9][0-9]*[dhw]$";
 
-    @Value("${ctp.config.container}")
+    @Value("${customObjectConfigurationContainerName}")
     private String defaultContainer;
-    @Value("${ctp.config.key}")
+    @Value("${customObjectConfigurationKey}")
     private String defaultKey;
 
     @Override

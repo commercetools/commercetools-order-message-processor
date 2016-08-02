@@ -1,32 +1,52 @@
 {"properties": [
   {
-    "name": "ctp.credentials.projectkey",
+    "name": "ctp.timeout.default",
     "type": "java.lang.String",
-    "description": "A description for 'ctp.credentials.projectkey'"
+    "description": "A description for 'ctp.timeout.default'"
   },
   {
-    "name": "ctp.credentials.clientid",
+    "name": "ctpProjectKey",
     "type": "java.lang.String",
-    "description": "A description for 'ctp.credentials.clientid'"
+    "description": "A description for 'ctpProjectKey'"
   },
   {
-    "name": "ctp.credentials.clientsecret",
+    "name": "ctpClientId",
     "type": "java.lang.String",
-    "description": "A description for 'ctp.credentials.clientsecret'"
+    "description": "A description for 'ctpClientId'"
   },
   {
-    "name": "ctp.defaulttimeout",
+    "name": "ctpClientSecret",
     "type": "java.lang.String",
-    "description": "A description for 'ctp.defaulttimeout'"
+    "description": "A description for 'ctpClientSecret'"
   },
   {
-    "name": "ctp.poller.messagetype",
+    "name": "ctpClientSecret",
     "type": "java.lang.String",
-    "description": "A description for 'ctp.poller.messagetype'"
+    "description": "A description for 'ctpClientSecret'"
   },
   {
-    "name": "ctp.this.servicename",
+    "name": "ctpAuthUrl",
     "type": "java.lang.String",
-    "description": "A description for 'ctp.this.servicename'"
+    "description": "A description for 'ctpAuthUrl'"
+  },
+  {
+    "name": "ctpApiUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpApiUrl'"
+  },
+  {
+    "name": "ctpApiUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpApiUrl'"
+  },
+  {
+    "name": "customObjectConfigurationContainerName",
+    "type": "java.lang.String",
+    "description": "A description for 'customObjectConfigurationContainerName'"
+  },
+  {
+    "name": "customObjectConfigurationKey",
+    "type": "java.lang.String",
+    "description": "A description for 'customObjectConfigurationKey'"
   }
 ]}

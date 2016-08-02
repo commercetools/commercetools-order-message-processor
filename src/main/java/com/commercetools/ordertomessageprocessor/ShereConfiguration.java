@@ -4,14 +4,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ShereClientConfiguration {
+public class ShereConfiguration {
 
-    @Value("${ctp.credentials.clientid}")
+    @Value("${ctpClientId}")
     private String clientId;
-    @Value("${ctp.credentials.clientsecret}")
+    @Value("${ctpClientSecret}")
     private String clientSecret;
-    @Value("${ctp.credentials.projectkey}")
+    @Value("${ctpProjectKey}")
     private String projectKey;
+    @Value("${ctpAuthUrl}")
+    private String ctpAuthUrl;
+    @Value("${ctpApiUrl}")
+    private String ctpApiUrl;
     @Value("${ctp.timeout.default}")
     private Integer defaultTimeout;
 
@@ -26,6 +30,15 @@ public class ShereClientConfiguration {
     public String getProjectKey() {
         return projectKey;
     }
+
+    public String ctpAuthUrl() {
+        return ctpAuthUrl;
+    }
+
+    public String ctpApiUrl() {
+        return ctpApiUrl;
+    }
+
     public Integer getDefaultTimeout() {
         return defaultTimeout;
     }

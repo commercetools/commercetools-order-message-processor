@@ -7,11 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import com.commercetools.ordertomessageprocessor.ShereClientConfiguration;
+import com.commercetools.ordertomessageprocessor.ShereConfiguration;
 
 import io.sphere.sdk.client.BlockingSphereClient;
 import io.sphere.sdk.client.SphereAccessTokenSupplier;
 import io.sphere.sdk.client.SphereClient;
+import io.sphere.sdk.client.SphereClientConfig;
 import io.sphere.sdk.client.SphereClientFactory;
 import io.sphere.sdk.http.HttpClient;
 
@@ -29,9 +30,14 @@ public class BasicTestConfiguration {
     }
     
     @Bean
-    @DependsOn({"shereClientConfiguration", "httpClient"})
-    public BlockingSphereClient blockingSphereClient(final ShereClientConfiguration config, final HttpClient httpClient) {
-        final io.sphere.sdk.client.SphereClientConfig clientConfig = io.sphere.sdk.client.SphereClientConfig.of(config.getProjectKey(), config.getClientId(), config.getClientSecret());
+    @DependsOn({"shereConfiguration", "httpClient"})
+    public BlockingSphereClient blockingSphereClient(final ShereConfiguration config, final HttpClient httpClient) {
+        final SphereClientConfig clientConfig = SphereClientConfig.of(
+                config.getProjectKey(),
+                config.getClientId(),
+                config.getClientSecret(),
+                config.ctpAuthUrl(),
+                config.ctpApiUrl());
         final SphereAccessTokenSupplier sphereAccessTokenSupplierWithAutoRefresh = SphereAccessTokenSupplier.ofAutoRefresh(clientConfig, httpClient, false);
         //lightweight client
         final SphereClient sphereClient = SphereClient.of(clientConfig, httpClient, sphereAccessTokenSupplierWithAutoRefresh);
