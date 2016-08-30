@@ -12,7 +12,7 @@ import org.springframework.boot.test.ConfigFileApplicationContextInitializer;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.commercetools.ordertomessageprocessor.ShereConfiguration;
+import com.commercetools.ordertomessageprocessor.SphereConfiguration;
 import com.commercetools.ordertomessageprocessor.configuration.ConfigurationManager;
 import com.commercetools.ordertomessageprocessor.configuration.ServiceConfiguration;
 import com.commercetools.ordertomessageprocessor.testconfiguration.BasicTestConfiguration;
@@ -24,7 +24,7 @@ import io.sphere.sdk.customobjects.CustomObjectDraft;
 import io.sphere.sdk.customobjects.commands.CustomObjectUpsertCommand;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {BasicTestConfiguration.class, ShereConfiguration.class, ConfigurationManagerConfiguration.class}, initializers = ConfigFileApplicationContextInitializer.class)
+@ContextConfiguration(classes = {BasicTestConfiguration.class, SphereConfiguration.class, ConfigurationManagerConfiguration.class}, initializers = ConfigFileApplicationContextInitializer.class)
 public class ConfigurationTest {
 
     @Autowired
