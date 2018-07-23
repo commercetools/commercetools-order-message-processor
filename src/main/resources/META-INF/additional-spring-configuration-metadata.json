@@ -1,0 +1,52 @@
+{"properties": [
+  {
+    "name": "ctp.timeout.default",
+    "type": "java.lang.String",
+    "description": "A description for 'ctp.timeout.default'"
+  },
+  {
+    "name": "ctpProjectKey",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpProjectKey'"
+  },
+  {
+    "name": "ctpClientId",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpClientId'"
+  },
+  {
+    "name": "ctpClientSecret",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpClientSecret'"
+  },
+  {
+    "name": "ctpClientSecret",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpClientSecret'"
+  },
+  {
+    "name": "ctpAuthUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpAuthUrl'"
+  },
+  {
+    "name": "ctpApiUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpApiUrl'"
+  },
+  {
+    "name": "ctpApiUrl",
+    "type": "java.lang.String",
+    "description": "A description for 'ctpApiUrl'"
+  },
+  {
+    "name": "customObjectConfigurationContainerName",
+    "type": "java.lang.String",
+    "description": "A description for 'customObjectConfigurationContainerName'"
+  },
+  {
+    "name": "customObjectConfigurationKey",
+    "type": "java.lang.String",
+    "description": "A description for 'customObjectConfigurationKey'"
+  }
+]}
