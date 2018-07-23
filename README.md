@@ -1,8 +1,7 @@
 # commercetools-order-message-processor
 
 ## Goal
-Task of this service is to send order confirmation mails for orders that are stored in the commercetools platform.
-To prevent sending Mails multiple times there is a syncinfo stored at the order.
+Service which can be run as a cron job to ensure that for each commercetools [OrderCreated](https://docs.commercetools.com/http-api-message-types.html#OrderCreated) message an order confirmation e-mail is sent. It will attempt to call  configured web front end URL which in turn is able to send an e-mail for given order UUID. In order to avoid sending same e-mail multiple times order's [syncInfo](https://docs.commercetools.com/http-api-projects-orders.html#syncinfo) is utilized. More technical details can be also found [here](https://github.com/commercetools/commercetools-order-message-processor/blob/master/doc/REQUIREMENTS.MD).
 
 ## Configuration
 The configuration is split between OS env variables and a custom object in the commercetools platform.
